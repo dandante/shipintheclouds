@@ -34,6 +34,7 @@ module SignUrl
 
     pwd = FileUtils.pwd
     signature = `cd #{RHINO_HOME} && java -jar -jar js-14.jar #{RAILS_ROOT}/etc/getsignature.js "#{hex_ary.join(" ")}"`.chomp
+    logger.info "got signature from rhino: #{signature}"
 
     "#{canonical_string}&Signature=#{signature}"
   end
@@ -43,6 +44,7 @@ module SignUrl
   
   
   def get_signed_url(song)
+    logger.info "in get_signed_url"
     aws_auth = YAML.load_file("#{ENV["HOME"]}/.s3conf/s3config.yml")
 
     secret_key = aws_auth["aws_secret_access_key"]

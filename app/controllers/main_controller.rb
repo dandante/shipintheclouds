@@ -4,6 +4,7 @@ class MainController < ApplicationController
   include SignUrl
   
   def get_url
+    logger.info "song = #{params[:song]}"
     song = params[:song]
     url = get_signed_url(song.gsub(" ", "%20"))
     render :text => url
@@ -15,6 +16,7 @@ class MainController < ApplicationController
   end
   
   def foo
+    logger.info "fooooo"
     render :text => "bar"
   end
 end
