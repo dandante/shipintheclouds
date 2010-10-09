@@ -5,8 +5,12 @@ class MainController < ApplicationController
   
   def get_url
     song = params[:song]
-    url = get_signed_url(song.gsub(" ", "+"))
+    url = get_signed_url(song.gsub(" ", "%20"))
     render :text => url
   end
   
+  
+  def test
+    render :text => MUSIC_BUCKET
+  end
 end

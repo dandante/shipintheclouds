@@ -105,7 +105,7 @@ var doSearch = function() {
 var onPlaySuccess = function(data) {
     jQuery("#loading").empty();
     log("in onPlaySuccess, data is " + data);
-    var str = "<h1><a target='_blank' href=\"" + data + "\">Play Song</a></h1>";
+    var str = "<a target='_blank' href=\"" + data + "\">Play Song</a>";
     jQuery("#play").html(str);
 }
 
@@ -123,6 +123,14 @@ var playSong = function(song) {
     });
 }
 
+// set up audio player
+/*
+AudioPlayer.setup("/javascripts/player.swf", {  
+                width: 290,
+                checkpolicy: "yes"  
+            });
+
+*/
 
 // document ready function
 jQuery(function() {

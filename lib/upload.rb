@@ -1,8 +1,15 @@
 #!/usr/bin/env ruby
 
-f = File.open("file_list.txt")
 
-dir = "/Volumes/music from molly august 2010"
+if ARGV.size != 3
+  puts "usage: #{$0} file_list dir bucketname"
+  exit
+end
+
+file_list, dir, bucketname = ARGV
+
+f = File.open(file_list)
+
 
 while (line = f.gets)
   next if line =~ /DS_Store/
@@ -10,7 +17,7 @@ while (line = f.gets)
   dest = line.gsub(/\.\//, "")
   line.gsub!(/^\./, dir)
   #puts line
-  cmd = %Q(s3cmd.rb put "music19671025:#{dest}" "#{line}")
+  cmd = %Q(s3cmd.rb put "#{bucketname}:#{dest}" "#{line}")
   puts cmd
   system cmd
 end

@@ -2,11 +2,30 @@
 <head>
     <title>ship in the clouds</title>
 <script type="text/javascript" src="javascripts/jquery.js"></script>
+<!--<script type="text/javascript" src="javascripts/audio-player.js"></script>-->
 <script type="text/javascript" src="javascripts/shipintheclouds.js"></script>
+
+
 
 </head>
 <body>
-    
+
+
+    <script type="text/javascript" src="/javascripts/audio-player.js"></script>  
+            <script type="text/javascript">  
+                AudioPlayer.setup("/javascripts/player.swf", {  
+                    width: 290  
+                });  
+            </script>
+
+
+
+            <p id="audioplayer_1">Alternative content</p>  
+                    <script type="text/javascript">  
+                    AudioPlayer.embed("audioplayer_1", {soundFile: "https://s3.amazonaws.com/music19671025/test2.mp3?AWSAccessKeyId=AKIAJBHAI75QI6ANOM4Q&Expires=1286136747&Signature=AJ/wlTcWfxk92zmRIdCpU/DBRpY%3D&x-amz-security-token=%7BUserToken%7DAAcHVXNlclRrboEHt91PHKyBBITNuACP3lcKapM5tDX0MO0KZZBIvO41KhD9Jewqt495o3dJRKom7tqIa1Et7C8ckVqSQFCYpmKcUlyJzuMxenm3fE5CD9VWHNAVcBFNI1LvfJ%2BHmnyOE1OFOrzxus0wa4JURNNuNhsCk9NbHm3umgo%2BQo3m//35snEdKQYh4z0tRzRg9j2vnlrk611s2crgxOXwafvlGQx4DouWB1Bn0sp9tkwilSzuDU7kLNQu4URml5XH7OrLk5ZF/D9TwiYqzs9MuPFyrBUgwDQQcOMW/k7/l/jLHRZJ7M92DWfb3OAaf2f2PQDl%2BcEWzGYkEAHuCGbOAoalk9E%3D"});  
+                    </script>  
+
+
         <div id="loading"></div>
         <div id="play"></div>
         <select id="field">
