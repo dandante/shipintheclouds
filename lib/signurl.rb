@@ -31,6 +31,7 @@ module SignUrl
       hex_ary.push(hexnum)
     end
 
+    logger.info "RHINO_HOME = #{RHINO_HOME}"
 
     pwd = FileUtils.pwd
     signature = `cd #{RHINO_HOME} && java -jar -jar js-14.jar #{RAILS_ROOT}/etc/getsignature.js "#{hex_ary.join(" ")}"`.chomp
