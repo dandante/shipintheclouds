@@ -13,4 +13,8 @@ class MainController < ApplicationController
   def test
     render :text => MUSIC_BUCKET
   end
+  
+  def foo
+    render :text => "bar"
+  end
 end
