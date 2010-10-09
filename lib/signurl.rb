@@ -35,7 +35,14 @@ module SignUrl
     logger.info "hex_ary = \n#{hex_ary.join " "}"
 
     pwd = FileUtils.pwd
-    signature = `cd #{RHINO_HOME} && java -jar -jar js-14.jar #{RAILS_ROOT}/etc/getsignature.js "#{hex_ary.join(" ")}"`.chomp
+    
+    if JAVA_HOME == ""
+      java_bin = ""
+    else
+      java_bin = "#{JAVA_HOME}/bin/"
+    end
+    
+    signature = `cd #{RHINO_HOME} && #{java_bin}java -jar -jar js-14.jar #{RAILS_ROOT}/etc/getsignature.js "#{hex_ary.join(" ")}"`.chomp
     logger.info "got signature from rhino: #{signature}"
 
     "#{canonical_string}&Signature=#{signature}"
