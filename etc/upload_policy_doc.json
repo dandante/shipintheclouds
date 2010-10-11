@@ -1,0 +1,9 @@
+{"expiration": "2020-01-01T00:00:00Z",
+  "conditions": [ 
+    {"bucket": "tobeindexed19671025"}, 
+    ["starts-with", "$key", ""],
+    {"acl": "private"},
+    ["starts-with", "$success_action_redirect", ""],
+    ["starts-with", "$Content-Type", ""]
+  ]
+}

@@ -1,1 +1,2 @@
 port: 6666
+to_be_indexed_bucket: "the name of my tobeindexed bucket"

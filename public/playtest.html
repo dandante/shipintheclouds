@@ -1,0 +1,24 @@
+<html>  
+    <head>  
+        <title>Your website</title>  
+  
+        ...  
+  
+        <script type="text/javascript" src="javascripts/audio-player.js"></script>  
+        <script type="text/javascript">  
+            AudioPlayer.setup("javascripts/player.swf", {  
+                width: 290  
+            });  
+        </script>  
+  
+    </head>  
+    <body>  
+  
+        <p id="audioplayer_1">Alternative content</p>  
+        <script type="text/javascript">  
+        AudioPlayer.embed("audioplayer_1", {soundFile: "http://localhost:3000/main/redir"});  
+        </script>  
+  
+  
+    </body>  
+</html>
