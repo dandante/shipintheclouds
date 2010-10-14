@@ -7,7 +7,7 @@ require 'pp'
 
 aws_auth = YAML.load_file("#{ENV["HOME"]}/.s3conf/s3config.yml")
 
-config = YAML.load_file("config.yml")
+#config = YAML.load_file("config.yml")
 
 access_key = aws_auth["aws_access_key_id"]
 secret_key = aws_auth["aws_secret_access_key"]
@@ -23,7 +23,7 @@ obj = nil
 
 
 s3 = RightAws::S3.new(access_key, secret_key)
-bucket = s3.bucket config["to_be_indexed_bucket"]
+bucket = s3.bucket "music19671025"#config["to_be_indexed_bucket"]
 #keys = bucket.keys
 
 #for key in keys
@@ -34,7 +34,9 @@ bucket = s3.bucket config["to_be_indexed_bucket"]
 for row in rows
   id = row["id"]
   file =  row["value"]["file"]
-  next unless file.downcase =~ /\.mp3$/
+#  puts "!" if file =~ /\//
+  puts "@" if file =~ /\.MP3$/
+  next unless file =~ /\// and file =~ /\.MP3$/
   key = RightAws::S3::Key.create(bucket, file)
   puts "exists? #{key.exists?}"
   unless key.exists?
@@ -43,7 +45,7 @@ for row in rows
   end
   
   puts "new name: #{id}.mp3 old name: #{key}"
-  key.rename("#{id}.mp3")
+#  key.rename("#{id}.mp3")
   puts "renamed key exists? #{key.exists?}"
   
   #exit if true
