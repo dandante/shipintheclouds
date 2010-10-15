@@ -24,3 +24,7 @@ config.action_controller.perform_caching             = true
 # config.action_mailer.raise_delivery_errors = false
 
 RHINO_HOME = "/path/to/rhino" 
+JAVA_HOME = "/usr/java/latest"
+
+SHIPINTHECLOUDS_LOGIN = "login"
+SHIPINTHECLOUDS_PASSWORD = "password"
