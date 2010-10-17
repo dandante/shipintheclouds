@@ -64,13 +64,16 @@ var onSearchSuccess = function(data) {
     } else {
        str = "<table><tr><th>title</th><th>artist</th><th>album</th></tr>";
        for (var i = 0; i < data["rows"].length; i++) {
-           var id = data["rows"][i]["id"]
+           var id = data["rows"][i]["id"];
            var row = data["rows"][i]["value"];
+           var file = row.file;
+           var segs = file.split(".");
+           var fileType = segs[segs.length -1];
            str += "<tr>"
-           //todo - unhardcode file type - get it from row["file"]
-           str += '<td><a class="playsong" id ="' + id + '.mp3" href="#">' + row.title + '</a></td>'
+           str += '<td><a class="playsong" id ="' + id + '.' + fileType +'" href="#">' + row.title + '</a></td>'
            str += "<td>" + row.artist + "</td>"
            str += "<td>" + row.album + "</td>"
+           str += "<td>" + file + "</td>"
            str += "</tr>";
        } 
        str += "</table>";
