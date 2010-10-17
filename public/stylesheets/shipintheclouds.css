@@ -21,7 +21,7 @@
 /* --- */
 
 .wrapper {
-	background: #fff url(faux_column.gif) repeat-y top left;
+	background: #fff; /* url(/images/_faux_column.gif) repeat-y top left; */
 	position: absolute;
 	top: 100px;
 	left: 0;
