@@ -55,6 +55,19 @@ var emit = function(arg1, arg2) {
     log("emit:arg1 = " + arg1 + ", arg2 = " +arg2);
 }
 
+var uniquify = function(rows) {
+    var hsh = {}
+    var output = [];
+    for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        if (!hsh[row["id"]]) {
+            output.push(row);
+        }
+        hsh[row["id"]] = 1;
+    }
+    return output;
+}
+
 var onSearchSuccess = function(data) {
     log("success");
     jQuery("#results").html("success");
@@ -62,10 +75,12 @@ var onSearchSuccess = function(data) {
     if (data["rows"].length == 0) {
         jQuery("#results").html("nothing matched your search");
     } else {
+       var rows = data["rows"];
+       rows = uniquify(rows);
        str = "<table><tr><th>title</th><th>artist</th><th>album</th></tr>";
-       for (var i = 0; i < data["rows"].length; i++) {
-           var id = data["rows"][i]["id"];
-           var row = data["rows"][i]["value"];
+       for (var i = 0; i < rows.length; i++) {
+           var id = rows[i]["id"];
+           var row = rows[i]["value"];
            var file = row.file;
            var segs = file.split(".");
            var fileType = segs[segs.length -1];
@@ -94,7 +109,8 @@ var checkForEnter = function(event) {
 
 var doSearch = function() {
     var search = jQuery("#search_key").val().toLowerCase();
-    var url = "/" + database + "/_design/example/_view/findBy" + jQuery("#field").val();
+    var field = jQuery("#field").val();
+    var url = "/" + database + "/_design/example/_view/findBy" + field;
     
     data = {"startkey": '"' + search + '"', "endkey": '"' + search + '\u9999"'}
     

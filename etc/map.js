@@ -53,14 +53,11 @@ function(doc) {
 //map:findByAny
 function(doc) {
     for (attr in doc) {
-        //log("attr = " + attr);
-        if (doc[attr].indexOf) {// it's a string
-            //log ("\tit's a string!");
+        if (doc[attr].indexOf) {
             var i;
             var lc = doc[attr].toLowerCase();
             for (i = 0; i < lc.length; i += 1) {
                 var slice = lc.slice(i); 
-                //log("\t\tslice="+slice);
                 emit(slice, doc);
             }
         }
@@ -68,7 +65,9 @@ function(doc) {
 }
 
 
+
 //map:findAll
 function(doc) {
     emit(doc.id, doc)
 }
+

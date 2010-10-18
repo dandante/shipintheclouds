@@ -23,5 +23,5 @@ end
 
 #pp hsh
 hsh.each_pair do |k,v|
-  puts v.size
+  puts v.size if v.size > 1
 end
