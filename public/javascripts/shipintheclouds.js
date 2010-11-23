@@ -167,6 +167,10 @@ jQuery(function() {
         playSong(song);
     });
 
+    jQuery("#search_button").live("click", function(event){
+        doSearch()
+    });
+    
     jQuery("#play").live("click", function(event) {
         //jQuery("#play").empty();
     });
