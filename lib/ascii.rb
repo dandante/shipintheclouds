@@ -5,6 +5,8 @@ class String
   accented_chars.each_with_index do |char, i|
     @@map[char] = unaccented_chars[i]
   end 
+  @@map["Æ"] = 'AE'
+  @@map["æ"] = 'ae'
 
 require 'pp'
 
@@ -23,6 +25,7 @@ s = "abücüöö"
 f = File.open("/Users/dante/Downloads/husker.txt")
 s = f.readlines.join
 
+s = "Æscii"
 puts s + " => " + s.eng_char
 
 
