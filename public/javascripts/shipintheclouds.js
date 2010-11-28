@@ -48,8 +48,8 @@ var getParameterByName = function ( name ) {
 }
 
 //global variables
-var database = "music"; // "music" or "toy"
-
+//var database = "music"; // "music" or "toy"
+var database = "toy";
 
 var emit = function(arg1, arg2) {
     log("emit:arg1 = " + arg1 + ", arg2 = " +arg2);
@@ -76,7 +76,7 @@ var onSearchSuccess = function(data) {
         jQuery("#results").html("nothing matched your search");
     } else {
        var rows = data["rows"];
-       rows = uniquify(rows);
+       //rows = uniquify(rows);
        str = "<table><tr><th>title</th><th>artist</th><th>album</th></tr>";
        for (var i = 0; i < rows.length; i++) {
            var id = rows[i]["id"];

@@ -52,18 +52,21 @@ function(doc) {
 
 //map:findByAny
 function(doc) {
+    var hasBeenEmitted = {};
     for (attr in doc) {
         if (doc[attr].indexOf) {
             var i;
             var lc = doc[attr].toLowerCase();
             for (i = 0; i < lc.length; i += 1) {
                 var slice = lc.slice(i); 
-                emit(slice, doc);
+                if(!hasBeenEmitted[slice]) {
+                    emit(slice, doc);
+                    hasBeenEmitted[slice] = 1;
+                }
             }
         }
     }
 }
-
 
 
 //map:findAll
