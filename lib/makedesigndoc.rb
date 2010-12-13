@@ -16,16 +16,26 @@ hsh = {}
 hsh["id"] = "_design/example"
 views = {}
 
-f = File.open("map.js")
+f = File.open("etc/map.js")
 
 key = nil
+functype = "map"
 
 while (line = f.gets)
   if line =~ /^\/\/map:/
     key = line.chomp.split(":").last
-    views[key] = {"map" => ""}
+    functype = "map"
+    views[key] = {} unless views.has_key? key
+    views[key][functype] = ""
+    next
+  elsif line =~ /^\/\/reduce:/
+    key = line.chomp.split(":").last
+    functype = "reduce"
+    views[key] = {} unless views.has_key? key
+    views[key][functype] = ""
+    next
   end
-  views[key]["map"] += line
+  views[key][functype] += line
 end
 #map = f.readlines.join
 
@@ -35,7 +45,7 @@ hsh["views"] = views
 
 
 
-#puts JSON.pretty_generate(hsh)
+#puts JSON.pretty_generate(hsh).gsub(/\\n/, "\n").gsub(/\\t/, "\t")
 #exit if true
 
 results = `curl --silent http://localhost:5984/#{database}/_design/example/`
@@ -46,11 +56,12 @@ rev = existing["_rev"]
 results = `curl --silent -X DELETE http://localhost:5984/#{database}/_design/example?rev=#{rev}`
 #puts results
 
-tmp = File.open("tmp", "w")
-tmp.puts JSON.pretty_generate(hsh)
+tmp = File.open("tmp.js", "w")
+tmp.puts JSON.pretty_generate(hsh).gsub(/\\n/, " ").gsub(/\\t/, " ")
+#tmp.puts hsh.to_json
 tmp.close
 
-results = `curl --silent -X PUT http://localhost:5984/#{database}/_design/example -d @tmp`
+results = `curl --silent -X PUT http://localhost:5984/#{database}/_design/example -d @tmp.js`
 puts results
 
 __END__

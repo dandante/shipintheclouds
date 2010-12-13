@@ -52,16 +52,17 @@ function(doc) {
 
 //map:findByAny
 function(doc) {
+    var hasBeenEmitted = {};
     for (attr in doc) {
-        //log("attr = " + attr);
-        if (doc[attr].indexOf) {// it's a string
-            //log ("\tit's a string!");
+        if (doc[attr].indexOf) {
             var i;
             var lc = doc[attr].toLowerCase();
             for (i = 0; i < lc.length; i += 1) {
                 var slice = lc.slice(i); 
-                //log("\t\tslice="+slice);
-                emit(slice, doc);
+                if(!hasBeenEmitted[slice]) {
+                    emit(slice, doc);
+                    hasBeenEmitted[slice] = 1;
+                }
             }
         }
     }
@@ -72,3 +73,4 @@ function(doc) {
 function(doc) {
     emit(doc.id, doc)
 }
+
