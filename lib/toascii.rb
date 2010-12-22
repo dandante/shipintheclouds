@@ -1,6 +1,4 @@
 require 'rubygems'
-require 'iconv'
-require 'unicode'
 
 class String
   
@@ -13,7 +11,7 @@ class String
   end
   
   
-  def to_ascii
+  def unaccented
     out = ""
     bytes = []
     

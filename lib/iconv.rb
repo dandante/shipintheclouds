@@ -3,7 +3,8 @@
 $KCODE = 'u'
 require 'rubygems'
 #require 'iconv'
-require 'unicode'
+# uncommenting the following line causes script/runner and script/console to fail. 
+#require 'unicode'
 
 s = "dan's music/the rock/Los Lobos/La Pistola y El Corazo\314\201n/03 Si Yo Quisiera.mp3"
 s = %Q(d4ed7c40-b082-012d-db52-549a200f1604: "dan's music/the rock/Los Lobos/La Pistola y El Corazo\xCC\x81n/03 Si Yo Quisiera.mp3")
@@ -14,6 +15,6 @@ s = %Q(d4ed7c40-b082-012d-db52-549a200f1604: "dan's music/the rock/Los Lobos/La 
 #ic_translit = Iconv.new('US-ASCII//TRANSLIT', 'UTF-8')
 #puts ic_translit.iconv(s) # => caff`e
 
-puts Unicode.normalize_KD(s).gsub(/[^\x00-\x7F]/n,'') 
+#puts Unicode.normalize_KD(s).gsub(/[^\x00-\x7F]/n,'') 
 
-puts Unicode.normalize_KD(s)#.gsub(/[^\x00-\x7F]/n,'') 
+#puts Unicode.normalize_KD(s)#.gsub(/[^\x00-\x7F]/n,'') 
