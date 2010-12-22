@@ -1,0 +1,15 @@
+<%= jqgrid_stylesheets %> 
+<%= jqgrid_javascripts %>
+
+
+
+<%= jqgrid("Songs", "songs", "/main/blah",
+	[
+		{ :field => "id", :label => "ID", :width => 35, :resizable => false },
+		{ :field => "title", :label => "Title" },
+		{ :field => "artist", :label => "Artist" },
+		{ :field => "album", :label => "Album" },
+		{ :field => "uuid", :label => "UUID" },
+		{ :field => "file", :label => "File" }				
+	]
+) %>

@@ -110,17 +110,60 @@ var checkForEnter = function(event) {
 var doSearch = function() {
     var search = jQuery("#search_key").val().toLowerCase();
     var field = jQuery("#field").val();
-    var url = "/" + database + "/_design/example/_view/findBy" + field;
+
+    //jQuery("#grid").empty();
+    //jQuery("#pager").empty();
     
-    data = {"startkey": '"' + search + '"', "endkey": '"' + search + '\u9999"'}
-    
-    log("url = \n" + url);
-    
-    jQuery.ajax({url: url,
-        dataType: 'json',
-        data: data,
-        success: onSearchSuccess,
-        error: onSearchError});
+    jQuery("#grid").jqGrid({
+	   	url:'/main/search?query=' + search + "&searchcol=" + field,
+	   	width: 500,
+	   	onSelectRow: function(id) {
+	   	    log("you selected a row with id: " + id);
+	   	},
+	   	beforeRequest: function() {
+	   	  log("in beforeRequest event handler");
+	   	},
+	   	gridComplete: function() {
+	   	  log("in gridComplete event handler");
+	   	},
+	   	loadComplete: function(data) {
+	   	  log("in loadComplete event handler");
+	   	  log("data is: " + data);
+	   	  log("more: " + data['rows'][0]['song']['artist']);
+	   	},
+	   	loadError: function(xhr, status, error) {
+	   	  log("in loadError handler, xhr = " + xhr + ", status = " + status + ", error = " + error);
+	   	},
+		datatype: "json",
+		colNames:['Title', 'Artist', 'Album', 'File', 'Length', 'id', 'uuid'],
+	   	colModel:[
+   		    {name:'title',index:'title', width:55},
+	   		{name:'artist',index:'arist', width:55},
+	   		{name:'album',index:'album', width:55},
+	   		{name:'file',index:'file', width:55},
+	   		{name:'length',index:'length', width:55},
+	   		{name:'id',index:'id', width:55},
+	   		{name:'uuid',index:'uuid', width:55}
+	   	],
+	   	rowNum:20,
+	   	rowList:[10,20,30],
+	   	pager: '#pager',
+	   	sortname: 'id',
+	   	jsonReader: {
+	   	  root: "rows",
+	   	  page: "page",
+	   	  total: "totalpages",
+	   	  records: "totalrecords",
+	   	  cell: "song",
+	   	  //id: "id",
+	   	  repeatitems: false
+	   	},
+	    viewrecords: true,
+	    sortorder: "asc",
+	    hidegrid: false,
+	    caption:"Results"
+	});
+	jQuery("#grid").jqGrid('navGrid','#pager',{edit:false,add:false,del:false});
 }
 
 var onPlaySuccess = function(data) {

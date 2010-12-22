@@ -1,6 +1,22 @@
+<link rel="stylesheet" type="text/css" media="screen" href="/css/ui-lightness/jquery-ui-1.7.1.custom.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="/css/ui.jqgrid.css" />
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 75%;
+}
+</style>
+
+
 
     <script type="text/javascript" src="/javascripts/jquery.js"></script>
-    <script type="text/javascript" src="/javascripts/shipintheclouds.js"></script>
+ 
+	<script src="/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+	<script src="/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+
+   <script type="text/javascript" src="/javascripts/shipintheclouds.js"></script>
  
  
  
@@ -34,11 +50,10 @@
             <td align="left">
                 Search:<br/>
                 <select id="field">
-                    <option value="Any">Any</option>
-                    <option value="Title">Title</option>
-                    <option value="Album">Album</option>
-                    <option value="Artist">Artist</option>
-                    <option value="Genre_s">Genre</option>
+                    <option value="any">Any</option>
+                    <option value="title_c">Title</option>
+                    <option value="album_c">Album</option>
+                    <option value="artist_c">Artist</option>
                 </select>
                 <input id="search_key"></input>
                 <button type="button" id="search_button">Find</button>
@@ -62,6 +77,8 @@
  
 <div id="content"> 
     <div id="results">
+		<table id="grid"></table>
+		<div id="pager"></div>
     </div>
 </div> 
  
