@@ -107,6 +107,11 @@ var checkForEnter = function(event) {
     }
 }
 
+
+var handleSelection = function(id) {
+    log("in handleSelection, id is "  + id);
+}
+
 var doSearch = function() {
     var search = jQuery("#search_key").val().toLowerCase();
     var field = jQuery("#field").val();

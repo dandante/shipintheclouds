@@ -1,6 +1,6 @@
 <%= jqgrid_stylesheets %> 
 <%= jqgrid_javascripts %>
-
+<script type="text/javascript" src="/javascripts/shipintheclouds.js"></script>
 
 
 <%= jqgrid("Songs", "songs", "/main/blah",
@@ -11,5 +11,6 @@
 		{ :field => "album", :label => "Album" },
 		{ :field => "uuid", :label => "UUID" },
 		{ :field => "file", :label => "File" }				
-	]
+	],
+	{:selection_handler => "handleSelection", :direct_selection => true}
 ) %>
