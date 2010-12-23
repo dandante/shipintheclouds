@@ -75,11 +75,10 @@ EOF
   def blah
     users = Song.find(:all, :limit => 24) do
       if params[:_search] == "true"
-        pseudo    =~ "%#{params[:pseudo]}%" if params[:pseudo].present?
-        firstname =~ "%#{params[:firstname]}%" if params[:firstname].present?
-        lastname  =~ "%#{params[:lastname]}%" if params[:lastname].present?                
-        email     =~ "%#{params[:email]}%" if params[:email].present?
-        role      =~ "%#{params[:role]}%" if params[:role].present?        
+        title_c    =~ "%#{params[:title_c]}%" if params[:title_c].present?
+        artist_c =~ "%#{params[:artist_c]}%" if params[:artist_c].present?
+        album_c  =~ "%#{params[:album_c]}%" if params[:album_c].present?                
+        file_c     =~ "%#{params[:file_c]}%" if params[:file_c].present?
       end
       paginate :page => params[:page], :per_page => params[:rows]      
       order_by "#{params[:sidx]} #{params[:sord]}"
@@ -87,7 +86,7 @@ EOF
 
     respond_to do |format|
       format.html
-      format.json { render :json => users.to_jqgrid_json([:id,:title,:artist,:album,:uuid,:file], 
+      format.json { render :json => users.to_jqgrid_json([:id,:title_c,:artist_c,:album_c,:uuid,:file_c], 
                                                          params[:page], params[:rows], users.total_entries) }
     end
   end

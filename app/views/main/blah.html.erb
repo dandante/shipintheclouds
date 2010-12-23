@@ -6,11 +6,12 @@
 <%= jqgrid("Songs", "songs", "/main/blah",
 	[
 		{ :field => "id", :label => "ID", :width => 35, :resizable => false },
-		{ :field => "title", :label => "Title" },
-		{ :field => "artist", :label => "Artist" },
-		{ :field => "album", :label => "Album" },
+		{ :field => "title_c", :label => "Title" },
+		{ :field => "artist_c", :label => "Artist" },
+		{ :field => "album_c", :label => "Album" },
 		{ :field => "uuid", :label => "UUID" },
-		{ :field => "file", :label => "File" }				
+		{ :field => "file_c", :label => "File" }				
 	],
-	{:selection_handler => "handleSelection", :direct_selection => true}
+	{:selection_handler => "handleSelection", :direct_selection => true,
+		:rows_per_page => 30}
 ) %>
