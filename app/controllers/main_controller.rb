@@ -71,6 +71,20 @@ EOF
     
   end
   
+  def post_data
+    if params[:oper] == "del"
+      Song.find(params[:id]).destroy
+    else
+      user_params = { :pseudo => params[:pseudo], :firstname => params[:firstname], :lastname => params[:lastname], 
+                      :email => params[:email], :role => params[:role] }
+      if params[:id] == "_empty"
+        Song.create(user_params)
+      else
+        Song.find(params[:id]).update_attributes(user_params)
+      end
+    end
+    render :nothing => true
+  end
 
   def blah
     users = Song.find(:all, :limit => 24) do
