@@ -16,7 +16,7 @@ class MainController < ApplicationController
     render :text => url
   end
   
-  def search
+  def main
     # sord = ASC|DESC
     # rows = 10
     # sidx = (column to sort by)
@@ -34,11 +34,10 @@ class MainController < ApplicationController
     sql = <<"EOF"
     
 		
-    select title, artist, album, file, length, id, uuid
+    select CBEGIN*CEND
     from songs
     where 
       (hidden = 0 or hidden is null)
-    and
       WHERECLAUSES
     
     order by ? ASCDESC
@@ -46,28 +45,68 @@ class MainController < ApplicationController
 EOF
     if (sord.downcase == "asc" or sord.downcase == "desc") 
       sql.gsub! "ASCDESC", sord
+    elsif sord.empty? or sord.nil?
+      sql.gsub! "ASCDESC", "asc"
     end
 
     if searchcol == "any"
-      whereclauses = "(title like ? or album like ? or album like ? or file like ?)"
+      whereclauses = "AND (title like ? or album like ? or album like ? or file like ?)"
+    elsif searchcol.nil? or searchcol.empty?
+      whereclauses = ""
     else
-      whereclauses = "(#{searchcol} like ?  )"
+      whereclauses = "AND (#{searchcol} like ?  )"
     end
     
     sql.gsub! "WHERECLAUSES", whereclauses
     
-    if searchcol === "any"
-      results = Song.find_by_sql [sql, query, query, query, query, sidx, rows, page]
-    else
-      results = Song.find_by_sql [sql, query, sidx, rows, page]
-    end
+    countquery = sql
+    countquery.gsub! "CBEGIN", "count("
+    countquery.gsub! "CEND", ") as count "
     
-    uber = {}
-    uber['rows'] = results
-    uber['page'] = "1"#page.to_s
-    uber['totalpages'] = "50"
-    uber['totalrecords'] = "500"
-    render :text => uber.to_json
+    
+    sql.gsub! "CBEGIN",""
+    sql.gsub! "CEND", ""
+    
+    bindings = []
+    count_bindings = []
+    
+    if searchcol === "any"
+      bindings = [sql, query, query, query, query, sidx, rows, page]
+      count_bindings = [countquery, query, query, query, query, sidx, rows, page]
+    elsif searchcol.nil? or searchcol.empty?
+      bindings =  [sql, sidx, rows, page]
+      count_bindings =  [countquery, sidx, rows, page]
+    else
+      bindings = [sql, query, sidx, rows, page]
+      count_bindings = [countquery, query, sidx, rows, page]
+    end
+
+    results = Song.find_by_sql(bindings) do
+      if params[:_search] == "true"
+        title_c    =~ "%#{params[:title_c]}%" if params[:title_c].present?
+        artist_c =~ "%#{params[:artist_c]}%" if params[:artist_c].present?
+        album_c  =~ "%#{params[:album_c]}%" if params[:album_c].present?                
+        file_c     =~ "%#{params[:file_c]}%" if params[:file_c].present?
+      end
+      paginate :page => params[:page], :per_page => params[:rows]      
+      order_by "#{params[:sidx]} #{params[:sord]}"
+    end
+
+    count = Song.find_by_sql(count_bindings).first.count.to_i
+    
+    respond_to do |format|
+      format.html
+      format.json { render :json => results.to_jqgrid_json([:id,:title_c,:artist_c,:album_c,:uuid,:file_c], 
+                                                         params[:page], params[:rows], count) }
+    end
+
+    
+    #uber = {}
+    #uber['rows'] = results
+    #uber['page'] = "1"#page.to_s
+    #uber['totalpages'] = "50"
+    #uber['totalrecords'] = "500"
+    #render :text => uber.to_json
     
   end
   
