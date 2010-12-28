@@ -113,6 +113,12 @@ var handleSelection = function(id) {
 }
 
 var doSearch = function() {
+    jQuery("#outer").empty();
+    jQuery("#outer").html('<table id="songs" class="scroll" cellpadding="0" cellspacing="0"></table>\n<div id="songs_pager" class="scroll" style="text-align:center;">');
+    gridInit();
+}
+
+var doSearchOLD = function() {
     var search = jQuery("#search_key").val().toLowerCase();
     var field = jQuery("#field").val();
 
@@ -216,14 +222,73 @@ jQuery(function() {
     });
 
     jQuery("#search_button").live("click", function(event){
-        doSearch()
+        doSearch();
     });
     
     jQuery("#play").live("click", function(event) {
         //jQuery("#play").empty();
     });
 
+    jQuery("#search_key").focus();
     
 });
 
+var lastsel;
+var gridInit = function() {
+          var url = "/main/main?q=1";
+          var search = jQuery("#search_key").val().toLowerCase();
+          var field = jQuery("#field").val();
+          log("search =" + search);
+          
+          if (search != "") {
+              url += "&query=" + search + "&searchcol=" + field;
+          }
+    
+          log("url = " + url);
+            
+          var mygrid = jQuery("#songs").jqGrid({
+              url:url,
+              editurl:'',
+              datatype: "json",
+              colNames:['ID','Title','Artist','Album','UUID','File'],
+              colModel:[{name:'id', index:'id',width:35,resizable:false},{name:'title_c', index:'title_c'},{name:'artist_c', index:'artist_c'},{name:'album_c', index:'album_c'},{name:'uuid', index:'uuid'},{name:'file_c', index:'file_c'}],
+              pager: '#songs_pager',
+              rowNum:30,
+              rowList:[10,25,50,100],
+              imgpath: '/images/jqgrid',
+              sortname: '',
+              viewrecords: true,
+              height: 150,
+              sortorder: '',
+              gridview: false,
+              scrollrows: true,
+              autowidth: false,
+              rownumbers: false,
+              multiselect: false,
+              
+              
+              
+        onSelectRow: function(id){ 
+          if(id){ 
+            handleSelection(id); 
+          } 
+        },
+              
+              subGrid:false,
+              
+              caption: "Songs"
+            })
+            .navGrid('#songs_pager',
+              {edit:false,add:false,del:false,search:false,refresh:true},
+              {afterSubmit:function(r,data){return true;(r,data,'edit');}},
+              {afterSubmit:function(r,data){return true;(r,data,'add');}},
+              {afterSubmit:function(r,data){return true;(r,data,'delete');}}
+            )
+            .navButtonAdd("#songs_pager",{caption:"",title:"Toggle Search Toolbar", buttonicon :'ui-icon-search', onClickButton:function(){ mygrid[0].toggleToolbar() } })
+            
+            
+            mygrid.filterToolbar();mygrid[0].toggleToolbar();
+            jQuery("#search_key").focus();
+            
+}
 

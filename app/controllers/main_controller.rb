@@ -59,7 +59,7 @@ EOF
     
     sql.gsub! "WHERECLAUSES", whereclauses
     
-    countquery = sql
+    countquery = sql.dup
     countquery.gsub! "CBEGIN", "count("
     countquery.gsub! "CEND", ") as count "
     
@@ -93,6 +93,7 @@ EOF
     end
 
     count = Song.find_by_sql(count_bindings).first.count.to_i
+    #count = 9999
     
     respond_to do |format|
       format.html
