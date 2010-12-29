@@ -16,6 +16,12 @@ class MainController < ApplicationController
     render :text => url
   end
   
+  
+  def song_detail
+    song = Song.find(params[:id])
+    render :text => song.to_json
+  end
+  
   def main
     # sord = ASC|DESC
     # rows = 10

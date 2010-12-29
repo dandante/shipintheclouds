@@ -110,6 +110,13 @@ var checkForEnter = function(event) {
 
 var handleSelection = function(id) {
     log("in handleSelection, id is "  + id);
+    //var ret = jQuery(this).getRowData(id);
+    //log("uuid = " + ret.uuid);
+    jQuery.get("/main/song_detail", {id: id}, function(data, textStatus, XMLHttpRequest){
+        var song = data['song'];
+        log("uuid = " + song['uuid']);
+        playSong(song['uuid'] + ".mp3");
+    }, "json");
 }
 
 var doSearch = function() {

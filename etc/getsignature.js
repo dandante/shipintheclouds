@@ -226,12 +226,13 @@ function binb2b64(binarray)
 }
 //************************************************************************************
 
-function getSecretKey() {
-    var fileName = environment["user.home"] + "/.s3conf/s3config.yml";
+function getSecretKey(fileName) {
+    //var fileName = environment["user.home"] + "/.s3conf/s3config.yml";
+    //print("in getSecretKey(), what is first arg: " + arguments[0]);
+    //var fileName = arguments[0];
     var yaml = readFile(fileName)
     yaml.match(/aws_secret_access_key: ([^\n]*)/)
     var secretKey = RegExp.$1;
-    //print(secretKey);
     return secretKey;
 }
 
@@ -239,10 +240,11 @@ function getSecretKey() {
 //main();
 //getSecretKey();
 
-if (arguments.length == 0) {
+
+if (arguments.length != 2) {
     print("quitting");
     quit();
 }
 
-var signature = getSignature(arguments[arguments.length -1], getSecretKey());
+var signature = getSignature(arguments[1], getSecretKey(arguments[0]));
 print(signature);
