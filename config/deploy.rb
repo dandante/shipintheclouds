@@ -130,7 +130,7 @@ task :post_update_code_hook do
  #run "cp #{shared_path}/config/boot.rb #{release_path}/config/boot.rb"
  upload "#{RAILS_ROOT}/config/database.yml", "#{release_path}/config/database.yml", :via => :scp
 # run "mv #{release_path}/app/controllers/application.rb #{release_path}/app/controllers/application_controller.rb"
- run "p #{release_path}/app/controllers/application_controller.rb #{release_path}/app/controllers/application.rb"
+ run "cp #{release_path}/app/controllers/application_controller.rb #{release_path}/app/controllers/application.rb"
  run "mkdir #{release_path}/public/test"
 
  run "rm -f #{release_path}/db/development.sqlite3"
