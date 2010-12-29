@@ -128,12 +128,13 @@ task :post_update_code_hook do
    upload "#{RAILS_ROOT}/config/environments/#{i}.rb", "#{release_path}/config/environments/#{i}.rb", :via => :scp
  end
  #run "cp #{shared_path}/config/boot.rb #{release_path}/config/boot.rb"
- #upload "#{RAILS_ROOT}/config/database.yml", "#{release_path}/config/database.yml", :via => :scp
+ upload "#{RAILS_ROOT}/config/database.yml", "#{release_path}/config/database.yml", :via => :scp
 # run "mv #{release_path}/app/controllers/application.rb #{release_path}/app/controllers/application_controller.rb"
  run "mkdir #{release_path}/public/test"
 
  run "rm -f #{release_path}/db/development.sqlite3"
- run "ln -s #{shared_path}/db/development.sqlite3 #{release_path}/db"
+ run "rm -f #{release_path}/db/production.sqlite3"
+ run "ln -s #{shared_path}/db/production.sqlite3 #{release_path}/db"
  
  # todo - deal with history
 
