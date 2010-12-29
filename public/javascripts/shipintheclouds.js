@@ -115,7 +115,7 @@ var handleSelection = function(id) {
     jQuery.get("/main/song_detail", {id: id}, function(data, textStatus, XMLHttpRequest){
         var song = data['song'];
         log("uuid = " + song['uuid']);
-        playSong(song['uuid'] + ".mp3");
+        playSong(song);
     }, "json");
 }
 
@@ -197,12 +197,22 @@ var onPlayError = function(xmlHttpRequest, textStatus, errorThrown) {
 }
 
 var playSong = function(song) {
+    jQuery("#loading").empty();
+    var str = "<a title='Play in browser or download' target='_blank' href=\"" + song.url + "\">Play " + song.title + "</a>";
+    jQuery("#play").html(str);
+    
+    var flashUrl = "/main/redir?id=" + song.id;
+    
+    AudioPlayer.embed("flashplay", {soundFile: flashUrl, titles: song.title, artists: song.artist, checkpolicy: "yes"}); 
+    
+    /*
     jQuery.ajax({
         url: "/main/get_url",
         data: {"song": song},
         success: onPlaySuccess,
         error: onPlayError
     });
+    */
 }
 
 // set up audio player
@@ -242,6 +252,11 @@ jQuery(function() {
 
 var lastsel;
 var gridInit = function() {
+          AudioPlayer.setup("/javascripts/player.swf", {  
+                     width: 290  
+           });
+        
+    
           var url = "/main/main?q=1";
           var search = jQuery("#search_key").val().toLowerCase();
           var field = jQuery("#field").val();
@@ -299,3 +314,4 @@ var gridInit = function() {
             
 }
 
+var setupAudioPlayer
