@@ -132,7 +132,7 @@ task :post_update_code_hook do
 # run "mv #{release_path}/app/controllers/application.rb #{release_path}/app/controllers/application_controller.rb"
  run "mkdir #{release_path}/public/test"
 
- run "rm #{release_path}/db/development.sqlite3"
+ run "rm -f #{release_path}/db/development.sqlite3"
  run "ln -s #{shared_path}/db/development.sqlite3 #{release_path}/db"
  
  # todo - deal with history
