@@ -2,7 +2,7 @@ class MainController < ApplicationController
   require 'pp'
   
   if RAILS_ENV == "production"
-    before_filter :authenticate,:only => [:main]
+    before_filter :authenticate,:only => [:main, :blah]
   end
   
   
@@ -17,12 +17,25 @@ class MainController < ApplicationController
   end
   
   
+  
+  
+  def songs_detail
+    songs = Song.find(params[:ids].split(","))
+    for song in songs
+      filename = "#{song.uuid}.mp3"
+      song.url = "/main/redir?id=#{song.id}";
+    end
+    render :text => songs.to_json(:methods => :url)
+  end
+
+
   def song_detail
     song = Song.find(params[:id])
     filename = "#{song.uuid}.mp3"
     song.url = get_signed_url(filename.gsub(" ", "%20"))
     render :text => song.to_json(:methods => :url)
   end
+
   
   def main
     # sord = ASC|DESC
@@ -33,9 +46,11 @@ class MainController < ApplicationController
     # _search = a query(?)
     
     sord = (params.has_key?(:sord)) ? params[:sord] : "asc"
-    rows = (params.has_key?(:rows)) ? params[:rows] : 20
-    sidx = (params.has_key?(:sidx)) ? params[:sidx] : "title_c"
+    rows = (params.has_key?(:rows)) ? params[:rows].to_i : 20
+    sidx = (params.has_key?(:sidx)) ? params[:sidx] : "id"#"title_c"
+    sidx = 'id' if sidx.empty? #"id"
     page = (params.has_key?(:page)) ? params[:page].to_i() - 1 : 0
+    page = page * rows
     searchcol = params[:searchcol]
     query = "%#{params[:query]}%"
     
@@ -48,8 +63,9 @@ class MainController < ApplicationController
       (hidden = 0 or hidden is null)
       WHERECLAUSES
     
-    order by ? ASCDESC
-    limit ? offset ?
+    order by songs.? ASCDESC
+    limit ? 
+    offset ?
 EOF
     if (sord.downcase == "asc" or sord.downcase == "desc") 
       sql.gsub! "ASCDESC", sord
@@ -67,7 +83,9 @@ EOF
     
     sql.gsub! "WHERECLAUSES", whereclauses
     
-    countquery = sql.dup
+    lines = sql.dup.split("\n")
+    lines.pop
+    countquery = lines.join("\n")
     countquery.gsub! "CBEGIN", "count("
     countquery.gsub! "CEND", ") as count "
     
@@ -80,13 +98,13 @@ EOF
     
     if searchcol === "any"
       bindings = [sql, query, query, query, query, sidx, rows, page]
-      count_bindings = [countquery, query, query, query, query, sidx, rows, page]
+      count_bindings = [countquery, query, query, query, query, sidx, rows]
     elsif searchcol.nil? or searchcol.empty?
       bindings =  [sql, sidx, rows, page]
-      count_bindings =  [countquery, sidx, rows, page]
+      count_bindings =  [countquery, sidx, rows]
     else
       bindings = [sql, query, sidx, rows, page]
-      count_bindings = [countquery, query, sidx, rows, page]
+      count_bindings = [countquery, query, sidx, rows]
     end
 
     results = Song.find_by_sql(bindings) do
@@ -105,7 +123,7 @@ EOF
     
     respond_to do |format|
       format.html
-      format.json { render :json => results.to_jqgrid_json([:id,:title_c,:artist_c,:album_c,:uuid,:file_c], 
+      format.json { render :json => results.to_jqgrid_json([:id,:title_c,:artist_c,:album_c,:file_c], 
                                                          params[:page], params[:rows], count) }
     end
 
@@ -148,7 +166,7 @@ EOF
 
     respond_to do |format|
       format.html
-      format.json { render :json => users.to_jqgrid_json([:id,:title_c,:artist_c,:album_c,:uuid,:file_c], 
+      format.json { render :json => users.to_jqgrid_json([:id,:title_c,:artist_c,:album_c,:file_c], 
                                                          params[:page], params[:rows], users.total_entries) }
     end
   end
